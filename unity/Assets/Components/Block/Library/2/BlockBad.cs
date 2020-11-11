@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockBad : Block
 {
-	public int ParticlesCount = 20;
+	public int ParticlesCount = 60;
 	
 	private const int StrengthDecrease = 2;
 
@@ -18,7 +18,7 @@ public class BlockBad : Block
 		for (int i = 0; i < ParticlesCount; ++i)
 		{
 			ParticleSystem.EmitParams particle = new ParticleSystem.EmitParams();
-			particle.position = transform.position + new Vector3((Random.value - 0.5f) * transform.parent.localScale.x, (Random.value - 0.5f) * transform.parent.localScale.y, -Settings.RacketHeight);
+			particle.position = transform.position + new Vector3((Random.value - 0.5f) * transform.parent.localScale.x * 2.0f, (Random.value - 0.5f) * transform.parent.localScale.y * 2.0f, -Settings.RacketHeight);
 			particle.startSize = 0.5f;
 
 			_type.Particles.Emit(particle, 10);
