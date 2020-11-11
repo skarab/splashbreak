@@ -24,7 +24,7 @@ public class Test : MonoBehaviour
 	void Update()
 	{
 		// TODO: out of screen ball maybe
-		if (_ball != null && _ball.transform.position.y < _racket.transform.position.y - 40.0f)
+		if (_ball != null && _ball.transform.position.y < _racket.transform.position.y - 4.0f)
 		{
 			Destroy(_ball);
 			_ball = null;
@@ -62,15 +62,15 @@ public class Test : MonoBehaviour
 
 		GameObject wallTop = Object.Instantiate<GameObject>(Wall, _walls.transform);
 		wallTop.transform.position = new Vector2(Settings.WorldWidth / 2.0f, Settings.WorldHeight + Settings.Space);
-		wallTop.transform.localScale = new Vector3(Settings.WorldWidth + Settings.Space * 2.0f, 1.0f, Settings.Depth);
+		wallTop.transform.localScale = new Vector3(Settings.WorldWidth + Settings.Space * 2.0f, Settings.Space, Settings.Depth);
 
 		GameObject wallLeft = Object.Instantiate<GameObject>(Wall, _walls.transform);
 		wallLeft.transform.position = new Vector2(-Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f);
-		wallLeft.transform.localScale = new Vector3(1.0f, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
+		wallLeft.transform.localScale = new Vector3(Settings.Space, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
 
 		GameObject wallRight = Object.Instantiate<GameObject>(Wall, _walls.transform);
 		wallRight.transform.position = new Vector2(Settings.WorldWidth + Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f);
-		wallRight.transform.localScale = new Vector3(1.0f, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
+		wallRight.transform.localScale = new Vector3(Settings.Space, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
 
 		// Create balls.
 

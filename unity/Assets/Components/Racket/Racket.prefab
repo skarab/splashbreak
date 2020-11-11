@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5690d4847747d45a19cfc87cda3ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Force: 40
+  Force: 6
   Feedback: 1
   PositionSpeedMultiplier: 0.3
   Strength: 50

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-	public float MinimumBallSpeed = 60.0f;
-	public float MaximumBallSpeed = 200.0f;
+	public float MinimumBallSpeed = 6.0f;
+	public float MaximumBallSpeed = 20.0f;
 	public float MinimumBallAngle = 30.0f;
+	public float StartForce = 0.2f;
 
 	private Rigidbody _rigidBody = null;
 	private Transform _attachment = null;
@@ -19,9 +20,10 @@ public class Ball : MonoBehaviour
 		transform.position = _attachment.position + Vector3.up * _attachmentOffset;
 	}
 
-	private void Start()
+	private void Awake()
 	{
 		_rigidBody = GetComponent<Rigidbody>();
+		transform.localScale = Vector3.one * Settings.BallRadius;
 	}
 
 	void Update()
@@ -32,7 +34,7 @@ public class Ball : MonoBehaviour
 
 			if (Input.GetKey(KeyCode.Space))
 			{
-				_rigidBody.AddForce(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Force);
+				_rigidBody.AddForce(new Vector3(0.0f, StartForce, 0.0f), ForceMode.Force);
 				_attachment = null;
 			}
 		}

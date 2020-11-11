@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class Racket : MonoBehaviour
 {
-	public float Force = 40.0f;
+	public float Force = 6.0f;
 	public float Feedback = 1.0f;
 	public float PositionSpeedMultiplier = 0.3f;
 	[Range(0, 100)] public int Strength = 50;
