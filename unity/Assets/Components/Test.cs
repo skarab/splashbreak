@@ -49,7 +49,7 @@ public class Test : MonoBehaviour
 		{
 			for (int x = 0; x < Settings.Width; ++x)
 			{
-				BlockManager.Get().CreateBlock(0, x, y);
+				BlockManager.Get().CreateBlock((int)(Random.value*BlockManager.Get().Library.Length), x, y);
 			}
 		}
 

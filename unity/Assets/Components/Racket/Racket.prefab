@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6185876138115196402}
   - component: {fileID: 2413510197376006322}
   - component: {fileID: 8888847592906956352}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Racket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,8 +64,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5690d4847747d45a19cfc87cda3ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Force: 6
-  Feedback: 1
+  Force: 8
+  Feedback: 1.5
   PositionSpeedMultiplier: 0.3
   Strength: 50
   Cylinder: {fileID: 7860215319872346294}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 7860215319872346294}
   - component: {fileID: 7950941817883566624}
   - component: {fileID: 6426334439702239268}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5261092828435654975}
   - component: {fileID: 2016242538295820672}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 4258499714942090607}
   - component: {fileID: 4112911127010225356}
   - component: {fileID: 904853770833275278}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CapsuleRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 8025691529138191154}
   - component: {fileID: 262919571446141008}
   - component: {fileID: 7267883695153577780}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CapsuleLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}

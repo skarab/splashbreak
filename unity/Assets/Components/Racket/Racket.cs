@@ -17,9 +17,17 @@ public class Racket : MonoBehaviour
 	private float _position = 0.0f;
 	private float _width = 0.0f;
 	private Rigidbody _rigidBody = null;
+	
+	private static Racket _Instance = null;
+
+	public static Racket Get()
+	{
+		return _Instance;
+	}
 
 	void Awake()
 	{
+		_Instance = this;
 		_rigidBody = GetComponent<Rigidbody>();
 
 		transform.position = new Vector2(Settings.WorldWidth / 2.0f, Settings.RacketOffset);
@@ -47,6 +55,7 @@ public class Racket : MonoBehaviour
 		}
 
 		_position = transform.position.x;
+		UpdateSize();
 	}
 
 	public void OnCollisionEnter(Collision collision)
@@ -64,6 +73,8 @@ public class Racket : MonoBehaviour
 
 	private void UpdateSize()
 	{
+		Strength = Mathf.Clamp(Strength, 0, 100);
+
 		_width = Mathf.Lerp(Settings.RacketWidthMinimum, Settings.RacketWidthMaximum, Strength / 100.0f) / 2.0f;
 		Cylinder.localScale = new Vector3(Settings.RacketHeight, _width, Settings.RacketHeight);
 		CapsuleLeft.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight, Settings.RacketHeight);
