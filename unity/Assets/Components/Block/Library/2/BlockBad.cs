@@ -6,7 +6,7 @@ public class BlockBad : Block
 {
 	public int ParticlesCount = 20;
 	
-	private const int StrengthDecrease = 4;
+	private const int StrengthDecrease = 2;
 
 	public static void OnGrab(int count)
 	{
