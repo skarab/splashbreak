@@ -18,7 +18,7 @@ public class Racket : MonoBehaviour
 	private float _width = 0.0f;
 	private Rigidbody _rigidBody = null;
 
-	void Start()
+	void Awake()
 	{
 		_rigidBody = GetComponent<Rigidbody>();
 
