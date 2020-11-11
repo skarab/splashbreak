@@ -12,6 +12,7 @@ public class Racket : MonoBehaviour
 	public Transform Cylinder;
 	public Transform CapsuleLeft;
 	public Transform CapsuleRight;
+	public CapsuleCollider Capsule;
 
 	private float _position = 0.0f;
 	private float _width = 0.0f;
@@ -65,9 +66,11 @@ public class Racket : MonoBehaviour
 	{
 		_width = Mathf.Lerp(Settings.RacketWidthMinimum, Settings.RacketWidthMaximum, Strength / 100.0f) / 2.0f;
 		Cylinder.localScale = new Vector3(Settings.RacketHeight, _width, Settings.RacketHeight);
-		CapsuleLeft.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight * 2.0f, Settings.RacketHeight);
-		CapsuleLeft.localPosition = new Vector3(-Cylinder.localScale.y, 0.0f, 0.0f);
-		CapsuleRight.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight * 2.0f, Settings.RacketHeight);
-		CapsuleRight.localPosition = new Vector3(Cylinder.localScale.y, 0.0f, 0.0f);
+		CapsuleLeft.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight, Settings.RacketHeight);
+		CapsuleLeft.localPosition = new Vector3(-Cylinder.localScale.y + Settings.RacketHeight/2.0f, 0.0f, 0.0f);
+		CapsuleRight.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight, Settings.RacketHeight);
+		CapsuleRight.localPosition = new Vector3(Cylinder.localScale.y - Settings.RacketHeight / 2.0f, 0.0f, 0.0f);
+		Capsule.height = _width * 2.0f + Settings.RacketHeight;
+		Capsule.radius = Settings.RacketHeight / 2.0f;
 	}
 }

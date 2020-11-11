@@ -23,7 +23,8 @@ public class Test : MonoBehaviour
 
 	void Update()
 	{
-		if (_ball != null && _ball.transform.position.y < _racket.transform.position.y)
+		// TODO: out of screen ball maybe
+		if (_ball != null && _ball.transform.position.y < _racket.transform.position.y - 40.0f)
 		{
 			Destroy(_ball);
 			_ball = null;
