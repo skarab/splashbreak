@@ -9,22 +9,12 @@ public class Test : MonoBehaviour
 	public GameObject Racket;
 	public GameObject Ball;
 	public Camera Cam;
-	
-	private const float _width = 320.0f;
-	private const float _height = 80.0f;
-	private const float _border = 1.0f;
-	private const int _gridWidth = 16;
-	private const int _gridHeight = 8;
-	private const float _barOffset = -40.0f;
 
 	private GameObject _root = null;
-	private GameObject _blocks = null;
 	private GameObject _walls = null;
 	private GameObject _balls = null;
 	private GameObject _racket = null;
 	private GameObject _ball = null;
-	private float _blockWidth = 0.0f;
-	private float _blockHeight = 0.0f;
 
 	void Start()
 	{
@@ -32,8 +22,8 @@ public class Test : MonoBehaviour
 	}
 
 	void Update()
-	{		
-		if (_ball != null && _ball.transform.position.y < _racket.transform.position.y - _blockHeight * 5.0f)
+	{
+		if (_ball != null && _ball.transform.position.y < _racket.transform.position.y)
 		{
 			Destroy(_ball);
 			_ball = null;
@@ -42,7 +32,7 @@ public class Test : MonoBehaviour
 		if (_ball == null)
 		{
 			_ball = Object.Instantiate<GameObject>(Ball, _balls.transform);
-			_ball.GetComponent<Ball>().Attach(_racket.transform, (_blockHeight + _ball.GetComponent<Renderer>().bounds.size.y) / 2.0f);
+			_ball.GetComponent<Ball>().Attach(_racket.transform, (Settings.RacketHeight + _ball.GetComponent<Renderer>().bounds.size.y) / 2.0f);
 		}
 	}
 
@@ -54,21 +44,11 @@ public class Test : MonoBehaviour
 
 		// Create blocks.
 
-		_blocks = new GameObject("blocks");
-		_blocks.transform.parent = _root.transform;
-		_blocks.transform.position = Vector3.zero;
-		_blocks.transform.rotation = Quaternion.identity;
-		
-		_blockWidth = (_width - _border * (_gridWidth - 1.0f)) / _gridWidth;
-		_blockHeight = (_height - _border * (_gridHeight - 1.0f)) / _gridHeight;
-
-		for (int j = 0; j < _gridHeight; ++j)
+		for (int y = 0; y < Settings.Height; ++y)
 		{
-			for (int i = 0; i < _gridWidth; ++i)
+			for (int x = 0; x < Settings.Width; ++x)
 			{
-				GameObject block = Object.Instantiate<GameObject>(Block, _blocks.transform);
-				block.transform.position = new Vector2(i * (_blockWidth + _border), j * (_blockHeight + _border));
-				block.transform.localScale = new Vector3(_blockWidth, _blockHeight, _blockHeight);
+				BlockManager.Get().CreateBlock(0, x, y);
 			}
 		}
 
@@ -80,16 +60,16 @@ public class Test : MonoBehaviour
 		_walls.transform.rotation = Quaternion.identity;
 
 		GameObject wallTop = Object.Instantiate<GameObject>(Wall, _walls.transform);
-		wallTop.transform.position = new Vector2(_width / 2.0f, _height + _border);
-		wallTop.transform.localScale = new Vector3(_width + _border * 2.0f, 1.0f);
+		wallTop.transform.position = new Vector2(Settings.WorldWidth / 2.0f, Settings.WorldHeight + Settings.Space);
+		wallTop.transform.localScale = new Vector3(Settings.WorldWidth + Settings.Space * 2.0f, 1.0f, Settings.Depth);
 
 		GameObject wallLeft = Object.Instantiate<GameObject>(Wall, _walls.transform);
-		wallLeft.transform.position = new Vector2(-_border, _height / 2.0f + _barOffset / 2.0f);
-		wallLeft.transform.localScale = new Vector3(1.0f, _height + _border * 2.0f - _barOffset);
+		wallLeft.transform.position = new Vector2(-Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f);
+		wallLeft.transform.localScale = new Vector3(1.0f, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
 
 		GameObject wallRight = Object.Instantiate<GameObject>(Wall, _walls.transform);
-		wallRight.transform.position = new Vector2(_width + _border, _height / 2.0f + _barOffset / 2.0f);
-		wallRight.transform.localScale = new Vector3(1.0f, _height + _border * 2.0f - _barOffset);
+		wallRight.transform.position = new Vector2(Settings.WorldWidth + Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f);
+		wallRight.transform.localScale = new Vector3(1.0f, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
 
 		// Create balls.
 
@@ -101,29 +81,23 @@ public class Test : MonoBehaviour
 		// Create racket.
 
 		_racket = Object.Instantiate<GameObject>(Racket, _root.transform);
-		_racket.transform.position = new Vector2(_width / 2.0f, _barOffset);
-		_racket.transform.localScale = new Vector3(_blockHeight, _blockWidth, _blockHeight);
-		
+
 		// Update camera.
-		
+
 		float hfov = Camera.VerticalToHorizontalFieldOfView(Cam.fieldOfView, Screen.width / (float)Screen.height);
-		float hdistance = (_width / 2.0f + _border * 6.0f) / Mathf.Tan(Mathf.Deg2Rad * hfov / 2.0f);
-		float vdistance = ((_height - _barOffset) / 2.0f + _border * 4.0f) / Mathf.Tan(Mathf.Deg2Rad * Cam.fieldOfView / 2.0f);
-		Cam.transform.position = new Vector3(_width / 2.0f, _height / 2.0f + _barOffset / 2.0f, -Mathf.Max(hdistance, vdistance));
+		float hdistance = (Settings.WorldWidth / 2.0f + Settings.Space * 6.0f) / Mathf.Tan(Mathf.Deg2Rad * hfov / 2.0f);
+		float vdistance = ((Settings.WorldHeight - Settings.RacketOffset) / 2.0f + Settings.Space * 4.0f) / Mathf.Tan(Mathf.Deg2Rad * Cam.fieldOfView / 2.0f);
+		Cam.transform.position = new Vector3(Settings.WorldWidth / 2.0f, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f, -Mathf.Max(hdistance, vdistance));
 		Cam.transform.rotation = Quaternion.identity;
 	}
 
 	private void DestroyLevel()
 	{
-		while (_blocks.transform.childCount > 0)
-			DestroyImmediate(_blocks.transform.GetChild(0).gameObject);
-		DestroyImmediate(_blocks);
-		
 		while (_walls.transform.childCount > 0)
 			DestroyImmediate(_walls.transform.GetChild(0).gameObject);
 		DestroyImmediate(_walls);
 
-		while (_balls.transform.childCount>0)
+		while (_balls.transform.childCount > 0)
 			DestroyImmediate(_balls.transform.GetChild(0).gameObject);
 		DestroyImmediate(_balls);
 

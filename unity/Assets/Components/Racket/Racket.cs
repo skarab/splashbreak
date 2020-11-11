@@ -8,13 +8,21 @@ public class Racket : MonoBehaviour
 	public float Force = 40.0f;
 	public float Feedback = 1.0f;
 	public float PositionSpeedMultiplier = 0.3f;
+	[Range(0, 100)] public int Strength = 50;
+	public Transform Cylinder;
+	public Transform CapsuleLeft;
+	public Transform CapsuleRight;
 
 	private float _position = 0.0f;
+	private float _width = 0.0f;
 	private Rigidbody _rigidBody = null;
 
 	void Start()
 	{
 		_rigidBody = GetComponent<Rigidbody>();
+
+		transform.position = new Vector2(Settings.WorldWidth / 2.0f, Settings.RacketOffset);
+		UpdateSize();
 	}
 
 	void Update()
@@ -40,17 +48,26 @@ public class Racket : MonoBehaviour
 		_position = transform.position.x;
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	public void OnCollisionEnter(Collision collision)
 	{
 		Ball ball = collision.gameObject.GetComponent<Ball>();
 		if (ball != null && collision.contactCount > 0)
 		{
 			float x = collision.contacts[0].point.x;
 			float distance = Mathf.Abs(x - transform.position.x);
-			float length = transform.localScale.x;
-			distance = Mathf.Min(distance, length);
-			float speed = Mathf.Pow(distance / length, 4.0f) * PositionSpeedMultiplier;
+			distance = Mathf.Min(distance, _width);
+			float speed = Mathf.Pow(distance / _width, 4.0f) * PositionSpeedMultiplier;
 			collision.rigidbody.velocity *= 1.0f + speed;
 		}
+	}
+
+	private void UpdateSize()
+	{
+		_width = Mathf.Lerp(Settings.RacketWidthMinimum, Settings.RacketWidthMaximum, Strength / 100.0f) / 2.0f;
+		Cylinder.localScale = new Vector3(Settings.RacketHeight, _width, Settings.RacketHeight);
+		CapsuleLeft.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight * 2.0f, Settings.RacketHeight);
+		CapsuleLeft.localPosition = new Vector3(-Cylinder.localScale.y, 0.0f, 0.0f);
+		CapsuleRight.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight * 2.0f, Settings.RacketHeight);
+		CapsuleRight.localPosition = new Vector3(Cylinder.localScale.y, 0.0f, 0.0f);
 	}
 }
