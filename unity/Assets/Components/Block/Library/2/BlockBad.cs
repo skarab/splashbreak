@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockBad : Block
 {
-	public int ParticlesCount = 60;
+	public int ParticlesCount = 120;
 	
 	private const int StrengthDecrease = 2;
 

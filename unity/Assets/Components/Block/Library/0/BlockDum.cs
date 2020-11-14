@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockDum : Block
 {
-	public int ParticlesCount = 60;
+	public int ParticlesCount = 120;
 
 	public static void OnGrab(int count)
 	{

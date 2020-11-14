@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BlockGood : Block
 {
-	public int ParticlesCount = 60;
+	public int ParticlesCount = 120;
 	
-	private const int StrengthIncrease = 4;
+	private const int StrengthIncrease = 2;
 
 	public static void OnGrab(int count)
 	{

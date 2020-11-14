@@ -24,6 +24,11 @@ public class BlockManager : MonoBehaviour
 		return _Instance;
 	}
 
+	public static bool IsInstantiated()
+	{
+		return _Instance != null;
+	}
+
 	public void CreateBlock(int id, int x, int y)
 	{
 		float blockWidth = (Settings.WorldWidth - Settings.Space * (Settings.Width - 1.0f)) / Settings.Width;
