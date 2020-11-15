@@ -9,6 +9,7 @@ Blocks:
 . Solid : unbreakable, mostly<br>
 
 Ideas:
+
 . multiball<br>
 . machinegun : shot things at each extremity to break blocks<br>
 . rocket : can break Solid blocks<br>
