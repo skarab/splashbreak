@@ -72,6 +72,7 @@ MonoBehaviour:
   CapsuleLeft: {fileID: 8025691529138191154}
   CapsuleRight: {fileID: 4258499714942090607}
   Capsule: {fileID: 2016242538295820672}
+  CapsuleMat: {fileID: 2100000, guid: 8bf9498960e9aa94eaabdc422b46be20, type: 2}
 --- !u!1 &1917235822925989457
 GameObject:
   m_ObjectHideFlags: 0

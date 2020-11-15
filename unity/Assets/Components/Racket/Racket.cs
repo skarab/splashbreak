@@ -13,12 +13,18 @@ public class Racket : MonoBehaviour
 	public Transform CapsuleLeft;
 	public Transform CapsuleRight;
 	public CapsuleCollider Capsule;
+	public Material CapsuleMat;
 
 	private float _position = 0.0f;
 	private float _width = 0.0f;
 	private Rigidbody _rigidBody = null;
 	
 	private static Racket _Instance = null;
+
+	private static class Properties
+	{
+		public static int Color = Shader.PropertyToID("_Color");
+	}
 
 	public static Racket Get()
 	{
@@ -76,6 +82,8 @@ public class Racket : MonoBehaviour
 		Strength = Mathf.Clamp(Strength, 0, 100);
 
 		_width = Mathf.Lerp(Settings.RacketWidthMinimum, Settings.RacketWidthMaximum, Strength / 100.0f) / 2.0f;
+		CapsuleMat.SetColor(Properties.Color, Color.Lerp(BlockManager.Get().Library[2].Particles.main.startColor.color, BlockManager.Get().Library[1].Particles.main.startColor.color, Strength/100.0f));
+
 		Cylinder.localScale = new Vector3(Settings.RacketHeight, _width, Settings.RacketHeight);
 		CapsuleLeft.localScale = new Vector3(Settings.RacketHeight, Settings.RacketHeight, Settings.RacketHeight);
 		CapsuleLeft.localPosition = new Vector3(-Cylinder.localScale.y + Settings.RacketHeight/2.0f, 0.0f, 0.0f);
