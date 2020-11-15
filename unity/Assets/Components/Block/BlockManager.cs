@@ -66,7 +66,7 @@ public class BlockManager : MonoBehaviour
 		// TODO find a way to make this out.
 		Library[0].OnGrab = new BlockTypeOnGrab(BlockDum.OnGrab);
 		Library[1].OnGrab = new BlockTypeOnGrab(BlockWater.OnGrab);
-		Library[2].OnGrab = new BlockTypeOnGrab(BlockSlime.OnGrab);
+		Library[2].OnGrab = new BlockTypeOnGrab(BlockBlood.OnGrab);
 		Library[3].OnGrab = new BlockTypeOnGrab(BlockGold.OnGrab);
 		Library[4].OnGrab = new BlockTypeOnGrab(BlockGlass.OnGrab);
 	}

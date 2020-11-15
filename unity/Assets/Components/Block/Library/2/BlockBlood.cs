@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockSlime : Block
+public class BlockBlood : Block
 {
 	private const int _ParticlesCount = 60;
 	private const int _Strength = 1;
