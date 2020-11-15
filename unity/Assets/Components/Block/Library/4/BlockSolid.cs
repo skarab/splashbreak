@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockGlass : Block
+public class BlockSolid : Block
 {
 	private const int _ParticlesCount = 60;
 	private const int _Score = 4;

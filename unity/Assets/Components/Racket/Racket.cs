@@ -8,7 +8,7 @@ public class Racket : MonoBehaviour
 	public float Force = 6.0f;
 	public float Feedback = 1.0f;
 	public float PositionSpeedMultiplier = 0.3f;
-	[Range(0, 100)] public int Strength = 50;
+	[Range(0, 100)] public float Strength = 50.0f;
 	public Transform Cylinder;
 	public Transform CapsuleLeft;
 	public Transform CapsuleRight;
@@ -79,7 +79,12 @@ public class Racket : MonoBehaviour
 
 	private void UpdateSize()
 	{
-		Strength = Mathf.Clamp(Strength, 0, 100);
+		Strength = Mathf.Clamp(Strength, 0.0f, 100.0f);
+
+		if (Ball.Get() != null && Ball.Get().IsAttached())
+		{
+			Strength = Mathf.Lerp(Strength, 50.0f, Time.deltaTime * 4.0f);
+		}
 
 		_width = Mathf.Lerp(Settings.RacketWidthMinimum, Settings.RacketWidthMaximum, Strength / 100.0f) / 2.0f;
 		CapsuleMat.SetColor(Properties.Color, Color.Lerp(BlockManager.Get().Library[2].Particles.main.startColor.color, BlockManager.Get().Library[1].Particles.main.startColor.color, Strength/100.0f));

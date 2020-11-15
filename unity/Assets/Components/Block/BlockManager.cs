@@ -68,7 +68,7 @@ public class BlockManager : MonoBehaviour
 		Library[1].OnGrab = new BlockTypeOnGrab(BlockWater.OnGrab);
 		Library[2].OnGrab = new BlockTypeOnGrab(BlockBlood.OnGrab);
 		Library[3].OnGrab = new BlockTypeOnGrab(BlockGold.OnGrab);
-		Library[4].OnGrab = new BlockTypeOnGrab(BlockGlass.OnGrab);
+		Library[4].OnGrab = new BlockTypeOnGrab(BlockSolid.OnGrab);
 	}
 
 	void Update()

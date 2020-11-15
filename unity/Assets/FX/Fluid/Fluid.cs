@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering;
 class Fluid : CustomPass
 {
 	private const int _blurStrength = 8;
-	private const int _downscale = 4;
+	private const int _downscale = 1;
 
 	public Material FluidMat;
 	public Material RendererMat;

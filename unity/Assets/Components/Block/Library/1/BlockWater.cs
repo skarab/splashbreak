@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockWater : Block
 {
 	private const int _ParticlesCount = 60;	
-	private const int _Strength = 1;
+	private const float _Strength = 1.0f;
 	private const int _Score = 1;
 
 	public static void OnGrab(int count)

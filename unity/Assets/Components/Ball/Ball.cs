@@ -14,6 +14,18 @@ public class Ball : MonoBehaviour
 	private Transform _attachment = null;
 	private float _attachmentOffset = 0.0f;
 
+	private static Ball _Instance = null;
+
+	public static Ball Get()
+	{
+		return _Instance;
+	}
+
+	public bool IsAttached()
+	{
+		return _attachment != null;
+	}
+
 	public void Attach(Transform attachment, float offset)
 	{
 		_attachment = attachment;
@@ -23,6 +35,7 @@ public class Ball : MonoBehaviour
 
 	private void Awake()
 	{
+		_Instance = this;
 		_rigidBody = GetComponent<Rigidbody>();
 		transform.localScale = Vector3.one * Settings.BallRadius;
 	}
