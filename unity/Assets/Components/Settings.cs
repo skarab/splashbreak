@@ -15,4 +15,5 @@ public class Settings
 	public const float RacketWidthMaximum = 6.0f;
 	public const float RacketHeight = 0.8f;
 	public const float BallRadius = 0.4f;
+	public const float WallHeight = 20.0f;
 }

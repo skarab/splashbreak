@@ -28,6 +28,8 @@ public class LevelManager : MonoBehaviour
 
 	public void LoadLevel()
 	{
+		EnvironmentManager.Get().LoadEnvironment(0);
+
 		_root = new GameObject("root");
 		_root.transform.position = Vector3.zero;
 		_root.transform.rotation = Quaternion.identity;
@@ -54,12 +56,12 @@ public class LevelManager : MonoBehaviour
 		wallTop.transform.localScale = new Vector3(Settings.WorldWidth + Settings.Space * 2.0f, Settings.Space, Settings.Depth);
 
 		GameObject wallLeft = Object.Instantiate<GameObject>(Wall, _walls.transform);
-		wallLeft.transform.position = new Vector2(-Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f);
-		wallLeft.transform.localScale = new Vector3(Settings.Space, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
+		wallLeft.transform.position = new Vector2(-Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f - Settings.WallHeight / 2.0f);
+		wallLeft.transform.localScale = new Vector3(Settings.Space, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset + Settings.WallHeight, Settings.Depth);
 
 		GameObject wallRight = Object.Instantiate<GameObject>(Wall, _walls.transform);
-		wallRight.transform.position = new Vector2(Settings.WorldWidth + Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f);
-		wallRight.transform.localScale = new Vector3(Settings.Space, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset, Settings.Depth);
+		wallRight.transform.position = new Vector2(Settings.WorldWidth + Settings.Space, Settings.WorldHeight / 2.0f + Settings.RacketOffset / 2.0f - Settings.WallHeight / 2.0f);
+		wallRight.transform.localScale = new Vector3(Settings.Space, Settings.WorldHeight + Settings.Space * 2.0f - Settings.RacketOffset + Settings.WallHeight, Settings.Depth);
 
 		// Create balls.
 
@@ -77,6 +79,8 @@ public class LevelManager : MonoBehaviour
 
     public void UnloadLevel()
 	{
+		EnvironmentManager.Get().UnloadEnvironment(0);
+
 		while (_walls.transform.childCount > 0)
 			DestroyImmediate(_walls.transform.GetChild(0).gameObject);
 		DestroyImmediate(_walls);
