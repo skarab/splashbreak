@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Level
 {
+	public string Name;
     public int EnvironmentID = 0;
     public int[,] Grid = new int[Settings.Width, Settings.Height];
 

@@ -142,6 +142,7 @@ class Fluid : CustomPass
 				HDUtils.DrawFullScreen(cmd, viewport, FluidMat, diffuseRti, null, Passes.Blur);
 			}
 		}
+		cmd.EndSample("Blur Diffuse");
 
 		cmd.BeginSample("Compositing");
 		{
@@ -158,7 +159,7 @@ class Fluid : CustomPass
 			cmd.ReleaseTemporaryRT(Textures.NormalsTex);
 			cmd.ReleaseTemporaryRT(Textures.BlurTex);
 		}
-		cmd.EndSample("Combine");
+		cmd.EndSample("Compositing");
 	}
 
 }
