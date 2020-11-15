@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
 	public TextMeshProUGUI InfosUI;
 
 	private bool _loaded = false;
+	private Level _level = null;
 	private GameObject _root = null;
 	private GameObject _walls = null;
 	private GameObject _balls = null;
@@ -47,9 +48,10 @@ public class LevelManager : MonoBehaviour
 		_gold += gold;
 	}
 
-	public void LoadLevel()
+	public void LoadLevel(Level level)
 	{
-		EnvironmentManager.Get().LoadEnvironment(0);
+		_level = level;
+		EnvironmentManager.Get().LoadEnvironment(_level.EnvironmentID);
 
 		_root = new GameObject("root");
 		_root.transform.position = Vector3.zero;
@@ -62,7 +64,7 @@ public class LevelManager : MonoBehaviour
 		{
 			for (int x = 0; x < Settings.Width; ++x)
 			{
-				if (BlockManager.Get().CreateBlock((int)(Random.value * BlockManager.Get().Library.Length), x, y))
+				if (_level.Grid[x, y] != 0 && BlockManager.Get().CreateBlock(_level.Grid[x, y] - 1, x, y))
 				{
 					++_blockCount;
 				}
@@ -110,7 +112,7 @@ public class LevelManager : MonoBehaviour
 
 	public void UnloadLevel()
 	{
-		EnvironmentManager.Get().UnloadEnvironment(0);
+		EnvironmentManager.Get().UnloadEnvironment(_level.EnvironmentID);
 		BlockManager.Get().Clear();
 		UI.SetActive(false);
 
@@ -125,13 +127,14 @@ public class LevelManager : MonoBehaviour
 		DestroyImmediate(_racket);
 		_racket = null;
 
+		_level = null;
 		_loaded = false;
 	}
 
 	public void OnHitBlock()
 	{
 		--_blockCount;
-		if (_blockCount==0)
+		if (_blockCount == 0)
 		{
 			// Win!
 			UnloadLevel();
