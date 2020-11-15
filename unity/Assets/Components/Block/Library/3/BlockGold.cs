@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class BlockGold : Block
 {
-	public int ParticlesCount = 120;
-	
-	private const int StrengthDecrease = 1;
+	private const int _ParticlesCount = 60;
+	private const int _Gold = 1;
+	private const int _Score = 1;
 
 	public static void OnGrab(int count)
 	{
+		LevelManager.Get().AddScore(_Score * count);
+		LevelManager.Get().AddGold(_Gold * count);
 	}
 
 	protected override void OnTouch()
 	{
-		for (int i = 0; i < ParticlesCount; ++i)
+		for (int i = 0; i < _ParticlesCount; ++i)
 		{
 			ParticleSystem.EmitParams particle = new ParticleSystem.EmitParams();
 			particle.position = transform.position + new Vector3((Random.value - 0.5f) * transform.parent.localScale.x * 2.0f, (Random.value - 0.5f) * transform.parent.localScale.y * 2.0f, -Settings.RacketHeight);

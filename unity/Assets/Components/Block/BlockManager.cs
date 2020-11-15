@@ -17,6 +17,8 @@ public class BlockManager : MonoBehaviour
 	public BlockType[] Library;
 	public Transform Blocks;
 
+	private bool _running = false;
+
 	private static BlockManager _Instance = null;
 
 	public static BlockManager Get()
@@ -29,7 +31,7 @@ public class BlockManager : MonoBehaviour
 		return _Instance != null;
 	}
 
-	public void CreateBlock(int id, int x, int y)
+	public bool CreateBlock(int id, int x, int y)
 	{
 		float blockWidth = (Settings.WorldWidth - Settings.Space * (Settings.Width - 1.0f)) / Settings.Width;
 		float blockHeight = (Settings.WorldHeight - Settings.Space * (Settings.Height - 1.0f)) / Settings.Height;
@@ -39,12 +41,17 @@ public class BlockManager : MonoBehaviour
 		block.transform.localScale = new Vector3(blockWidth, blockHeight, Settings.Depth);
 
 		block.GetComponent<Block>().Create(Library[id]);
+		_running = true;
+
+		return block.GetComponent<Block>().IsDestroyable();
 	}
 
 	public void Clear()
 	{
 		while (Blocks.transform.childCount > 0)
 			DestroyImmediate(Blocks.transform.GetChild(0).gameObject);
+
+		_running = false;
 	}
 
 	void Awake()
@@ -60,13 +67,16 @@ public class BlockManager : MonoBehaviour
 
 	void Update()
 	{
-		for (int i=0 ; i<Library.Length ; ++i)
-		{ 
-			List<ParticleCollisionEvent> collisions = new List<ParticleCollisionEvent>();
-			Library[i].Particles.GetCollisionEvents(Racket.Get().Capsule.gameObject, collisions);
-			if (collisions.Count>0)
-			{
-				Library[i].OnGrab(collisions.Count);
+		if (_running)
+		{
+			for (int i=0 ; i<Library.Length ; ++i)
+			{ 
+				List<ParticleCollisionEvent> collisions = new List<ParticleCollisionEvent>();
+				Library[i].Particles.GetCollisionEvents(Racket.Get().Capsule.gameObject, collisions);
+				if (collisions.Count>0)
+				{
+					Library[i].OnGrab(collisions.Count);
+				}
 			}
 		}
 	}

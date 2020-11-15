@@ -11,13 +11,25 @@ public class Block : MonoBehaviour
 		_type = type;
 	}
 
+	public virtual bool IsDestroyable()
+	{
+		return true;
+	}
+
 	protected virtual void OnTouch()
 	{
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		OnTouch();
-		Destroy(transform.gameObject);
+		if (collision.gameObject.GetComponent<Ball>()!=null)
+		{
+			OnTouch();
+		
+			if (IsDestroyable())
+			{
+				Destroy(transform.gameObject);
+			}
+		}
 	}
 }
