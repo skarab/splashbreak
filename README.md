@@ -6,7 +6,7 @@ Blocks:
 . Dum : fluid giving score<br>
 . Water : fluid giving score and increasing racket size<br>
 . Blood : fluid giving score and decreasing racket size<br>
-. Gold : fluid giving gold, used to buy balls or increase final score<br>
+. Gold : fluid giving score, and gold, used to buy balls or increase final score<br>
 . Solid : unbreakable, mostly<br>
 
 Ideas:
