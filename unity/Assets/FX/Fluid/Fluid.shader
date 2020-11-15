@@ -21,6 +21,7 @@
 		samplerCUBE _Sky;
 
 		float4 _LightDirection;
+		float _Roughness;
 
 		struct vertexInput
 		{
@@ -67,7 +68,17 @@
 			posInput = GetPositionInput(uv, _ScreenSize.zw, depth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
 			float3 P2 = posInput.positionWS;
 
-			float3 normal = normalize(cross(P2 - P0, P1 - P0));
+			uv = float2(input.vertex.x - offset / _ScreenSize.x, input.vertex.y);
+			depth = _DepthTex.Sample(sampler_DepthTex, uv * _ScreenSize.zw);
+			posInput = GetPositionInput(uv, _ScreenSize.zw, depth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
+			float3 P3 = posInput.positionWS;
+
+			uv = float2(input.vertex.x, input.vertex.y - offset / _ScreenSize.y);
+			depth = _DepthTex.Sample(sampler_DepthTex, uv * _ScreenSize.zw);
+			posInput = GetPositionInput(uv, _ScreenSize.zw, depth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
+			float3 P4 = posInput.positionWS;
+
+			float3 normal = normalize(cross(P2 - P0, P1 - P0) + cross(P4 - P0, P3 - P0));
 			return half4(normal, 1.0);
 		}
 
@@ -124,21 +135,20 @@
 			if (depth == 0.0 || sourceDepth >= depth)
 				discard;
 
-			half4 diffuse = _DiffuseTex.Load(int3(uv * _DiffuseTex_TexelSize.zw, 0));
+			half3 color = _DiffuseTex.Load(int3(uv * _DiffuseTex_TexelSize.zw, 0)).rgb;
 			half3 normal = _NormalsTex.Load(int3(uv * _DiffuseTex_TexelSize.zw, 0)).rgb;
 			normal = normalize(normal);
 			
-
 			PositionInputs posInput = GetPositionInput(input.vertex.xy, _ScreenSize.zw, depth, UNITY_MATRIX_I_VP, UNITY_MATRIX_V);
 			float3 viewDirection = GetWorldSpaceNormalizeViewDir(posInput.positionWS);
-			float3 env = texCUBE(_Sky, reflect(viewDirection, normal)).xyz;
+			float3 env = texCUBElod(_Sky, float4(reflect(-viewDirection, normal), lerp(0.0, 8.0, _Roughness))).xyz;
 
-			float3 R = reflect(-_LightDirection.xyz, normal);
-			float3 specular = float3(1.0, 1.0, 1.0) * pow(saturate(dot(R, viewDirection)), 4.0) * 50.0;
+			float diffuse = max(dot(-_LightDirection.xyz, normal), 0.0);
 
+			float3 R = reflect(_LightDirection.xyz, normal);
+			float3 specular = pow(saturate(dot(R, viewDirection)), 4.0) * 10.0;
 			
-			
-			output.color = half4((specular + env) * diffuse, 1.0);  //half4(env, 1.0); //diffuse; // half4(normal, 1.0);
+			output.color = half4((specular + env * 4.0 + diffuse) * color * 0.5, 1.0); //half4((diffuse + specular * env) * 0.5, 1.0);  //half4((specular ) * diffuse + env, 1.0);  //half4(env, 1.0); //diffuse; // half4(normal, 1.0);
 			output.depth = depth;
 			return output;
 		}

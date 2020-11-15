@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 985547753843905614}
   - component: {fileID: 985547753843905601}
   - component: {fileID: 7406392649038345012}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 5dd15efb47ce103499daee41e031817a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8adb1b8d6eae048aa8d707b0b18942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumBallSpeed: 60
-  maximumBallSpeed: 200
-  minimumBallAngle: 30
+  MinimumBallSpeed: 6
+  MaximumBallSpeed: 20
+  MinimumBallAngle: 30
+  StartForce: 0.2

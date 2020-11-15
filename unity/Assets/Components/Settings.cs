@@ -8,7 +8,7 @@ public class Settings
 	public const int Height = 8; 
 	public const float WorldWidth = 32.0f;
 	public const float WorldHeight = 8.0f;
-	public const float Space = 0.1f;
+	public const float Space = 0.0f;
 	public const float Depth = 1.0f;
 	public const float RacketOffset = -4.0f;
 	public const float RacketWidthMinimum = 1.0f;

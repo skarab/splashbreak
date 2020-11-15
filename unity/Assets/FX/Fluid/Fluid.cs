@@ -6,6 +6,13 @@ using UnityEngine.Experimental.Rendering;
 class Fluid : CustomPass
 {
 	private const int _blurStrength = 8;
+	private const int _downscale = 4;
+
+	public Material FluidMat;
+	public Material RendererMat;
+	public Light DirectionalLight;
+	public Cubemap Sky;
+	[Range(0, 1)] public float Roughness = 0.0f;
 
 	private static class Textures
 	{
@@ -20,6 +27,7 @@ class Fluid : CustomPass
 	private static class Properties
 	{
 		public static int LightDirection = Shader.PropertyToID("_LightDirection");
+		public static int Roughness = Shader.PropertyToID("_Roughness");
 	}
 
 	private static class Passes
@@ -33,11 +41,6 @@ class Fluid : CustomPass
 	{
 		public static string Vertical = "VERTICAL";
 	}
-
-	public Material FluidMat;
-	public Material RendererMat;
-	public Light DirectionalLight;
-	public Cubemap Sky;
 
 	protected override void Setup(ScriptableRenderContext renderContext, CommandBuffer cmd)
 	{
@@ -62,7 +65,7 @@ class Fluid : CustomPass
 
 		int width = hdCamera.camera.pixelWidth;
 		int height = hdCamera.camera.pixelHeight;
-		Rect viewportBlur = new Rect(Vector2.zero, new Vector2(width/2, height/2));
+		Rect viewportBlur = new Rect(Vector2.zero, new Vector2(width / _downscale, height / _downscale));
 		Rect viewport = new Rect(Vector2.zero, new Vector2(width, height));
 
 		RenderTargetIdentifier depthRti = new RenderTargetIdentifier(Textures.DepthTex);
@@ -71,7 +74,7 @@ class Fluid : CustomPass
 		RenderTargetIdentifier blurRti = new RenderTargetIdentifier(Textures.BlurTex);
 		RenderTargetIdentifier globalDepthRti = new RenderTargetIdentifier(Textures.GlobalDepthTex);
 
-		cmd.GetTemporaryRT(Textures.BlurTex, width/2, height/2, 0, FilterMode.Bilinear, RenderTextureFormat.ARGBHalf);
+		cmd.GetTemporaryRT(Textures.BlurTex, width / _downscale, height / _downscale, 0, FilterMode.Bilinear, RenderTextureFormat.ARGBHalf);
 		cmd.GetTemporaryRT(Textures.GlobalDepthTex, width, height, 24, FilterMode.Point, RenderTextureFormat.Depth);
 
 		cmd.BeginSample("Draw Renderers");
@@ -84,7 +87,7 @@ class Fluid : CustomPass
 			cmd.ClearRenderTarget(true, true, Color.black);
 			cmd.SetViewProjectionMatrices(hdCamera.camera.worldToCameraMatrix, hdCamera.camera.projectionMatrix);
 
-			for (int i=0 ; i<renderers.Length ; ++i)
+			for (int i = 0; i < renderers.Length; ++i)
 			{
 				if (renderers[i] is ParticleSystemRenderer)
 				{
@@ -111,8 +114,8 @@ class Fluid : CustomPass
 
 			cmd.BeginSample("Blur");
 			{
-				for (int i=0 ; i<_blurStrength; ++i)
-				{ 
+				for (int i = 0; i < _blurStrength; ++i)
+				{
 					cmd.SetGlobalTexture(Textures.DiffuseTex, normalsRti);
 					cmd.DisableShaderKeyword(Keywords.Vertical);
 					HDUtils.DrawFullScreen(cmd, viewportBlur, FluidMat, blurRti, null, Passes.Blur);
@@ -145,6 +148,7 @@ class Fluid : CustomPass
 			MaterialPropertyBlock matBlock = new MaterialPropertyBlock();
 			matBlock.SetTexture(Textures.SkyTex, Sky);
 			matBlock.SetVector(Properties.LightDirection, DirectionalLight.transform.forward);
+			matBlock.SetFloat(Properties.Roughness, Roughness);
 
 			cmd.SetGlobalTexture(Textures.DiffuseTex, new RenderTargetIdentifier(Textures.DiffuseTex));
 			HDUtils.DrawFullScreen(cmd, FluidMat, sourceColor, sourceDepth, matBlock, Passes.Compositing);
