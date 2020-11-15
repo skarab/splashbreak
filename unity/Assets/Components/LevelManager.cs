@@ -128,6 +128,16 @@ public class LevelManager : MonoBehaviour
 		_loaded = false;
 	}
 
+	public void OnHitBlock()
+	{
+		--_blockCount;
+		if (_blockCount==0)
+		{
+			// Win!
+			UnloadLevel();
+		}
+	}
+
 	void Awake()
 	{
 		_Instance = this;

@@ -24,11 +24,11 @@ public class Block : MonoBehaviour
 	{
 		if (collision.gameObject.GetComponent<Ball>()!=null)
 		{
-			OnTouch();
-		
 			if (IsDestroyable())
 			{
+				OnTouch();
 				Destroy(transform.gameObject);
+				LevelManager.Get().OnHitBlock();
 			}
 		}
 	}

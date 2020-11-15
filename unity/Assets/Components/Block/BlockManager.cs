@@ -51,6 +51,11 @@ public class BlockManager : MonoBehaviour
 		while (Blocks.transform.childCount > 0)
 			DestroyImmediate(Blocks.transform.GetChild(0).gameObject);
 
+		for (int i = 0; i < Library.Length; ++i)
+		{
+			Library[i].Particles.Clear();
+		}	
+
 		_running = false;
 	}
 
@@ -63,6 +68,7 @@ public class BlockManager : MonoBehaviour
 		Library[1].OnGrab = new BlockTypeOnGrab(BlockWater.OnGrab);
 		Library[2].OnGrab = new BlockTypeOnGrab(BlockSlime.OnGrab);
 		Library[3].OnGrab = new BlockTypeOnGrab(BlockGold.OnGrab);
+		Library[4].OnGrab = new BlockTypeOnGrab(BlockGlass.OnGrab);
 	}
 
 	void Update()
