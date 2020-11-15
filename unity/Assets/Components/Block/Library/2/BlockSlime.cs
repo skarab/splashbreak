@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockBad : Block
+public class BlockSlime : Block
 {
 	public int ParticlesCount = 120;
 	
