@@ -6,7 +6,8 @@ public class Ball : MonoBehaviour
 {
 	public float MinimumBallSpeed = 6.0f;
 	public float MaximumBallSpeed = 20.0f;
-	public float MinimumBallAngle = 30.0f;
+	public float MinimumHorizontalBallAngle = 30.0f;
+	public float MinimumVerticalBallAngle = 5.0f;
 	public float StartForce = 0.2f;
 
 	private Rigidbody _rigidBody = null;
@@ -59,9 +60,16 @@ public class Ball : MonoBehaviour
 				Vector3 normalizedVelocity = _rigidBody.velocity / velocityMagnitude;
 				Vector3 axis = normalizedVelocity.x < 0.0f ? Vector3.left : Vector3.right;
 				float angle = Vector3.SignedAngle(normalizedVelocity, axis, Vector3.forward);
-				if (Mathf.Abs(angle) < MinimumBallAngle)
+				if (Mathf.Abs(angle) < MinimumHorizontalBallAngle)
 				{
-					normalizedVelocity = Quaternion.Euler(new Vector3(0.0f, 0.0f, -MinimumBallAngle * Mathf.Sign(angle))) * axis;
+					normalizedVelocity = Quaternion.Euler(new Vector3(0.0f, 0.0f, -MinimumHorizontalBallAngle * Mathf.Sign(angle))) * axis;
+					_rigidBody.velocity = normalizedVelocity * velocityMagnitude;
+				}
+				axis = normalizedVelocity.y < 0.0f ? Vector3.down : Vector3.up;
+				angle = Vector3.SignedAngle(normalizedVelocity, axis, Vector3.forward);
+				if (Mathf.Abs(angle) < MinimumVerticalBallAngle)
+				{
+					normalizedVelocity = Quaternion.Euler(new Vector3(0.0f, 0.0f, -MinimumVerticalBallAngle * Mathf.Sign(angle))) * axis;
 					_rigidBody.velocity = normalizedVelocity * velocityMagnitude;
 				}
 			}

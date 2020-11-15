@@ -148,7 +148,7 @@
 			float3 R = reflect(_LightDirection.xyz, normal);
 			float3 specular = pow(saturate(dot(R, viewDirection)), 4.0) * 10.0;
 			
-			output.color = half4((specular + env * 4.0 + diffuse) * color * 0.5, 1.0); //half4((diffuse + specular * env) * 0.5, 1.0);  //half4((specular ) * diffuse + env, 1.0);  //half4(env, 1.0); //diffuse; // half4(normal, 1.0);
+			output.color = half4((specular + env * 4.0 + diffuse) * color, 1.0); //half4((diffuse + specular * env) * 0.5, 1.0);  //half4((specular ) * diffuse + env, 1.0);  //half4(env, 1.0); //diffuse; // half4(normal, 1.0);
 			output.depth = depth;
 			return output;
 		}
