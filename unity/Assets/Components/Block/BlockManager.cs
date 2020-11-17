@@ -7,6 +7,7 @@ public delegate void BlockTypeOnGrab(int count);
 [System.Serializable]
 public struct BlockType
 {
+	public GameObject Node;
 	public GameObject Prefab;
 	public ParticleSystem Particles;
 	public BlockTypeOnGrab OnGrab;
@@ -73,7 +74,7 @@ public class BlockManager : MonoBehaviour
 
 	void Update()
 	{
-		if (_running)
+		if (_running && Racket.IsInstantiated())
 		{
 			for (int i=0 ; i<Library.Length ; ++i)
 			{ 

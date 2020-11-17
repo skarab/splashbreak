@@ -7,10 +7,7 @@ public class Test : MonoBehaviour
 	
 	void Start()
 	{
-		Level level = new Level();
-		level.Randomize();
-
-		LevelManager.Get().LoadLevel(level);
+		
 	}
 
 	void Update()

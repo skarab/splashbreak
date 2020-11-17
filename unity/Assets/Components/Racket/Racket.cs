@@ -26,6 +26,11 @@ public class Racket : MonoBehaviour
 		public static int Color = Shader.PropertyToID("_Color");
 	}
 
+	public static bool IsInstantiated()
+	{
+		return _Instance != null;
+	}
+
 	public static Racket Get()
 	{
 		return _Instance;
@@ -38,6 +43,11 @@ public class Racket : MonoBehaviour
 
 		transform.position = new Vector2(Settings.WorldWidth / 2.0f, Settings.RacketOffset);
 		UpdateSize();
+	}
+
+	private void OnDestroy()
+	{
+		_Instance = null;
 	}
 
 	void Update()

@@ -50,26 +50,7 @@ public class LevelManager : MonoBehaviour
 
 	public void LoadLevel(Level level)
 	{
-		_level = level;
-		EnvironmentManager.Get().LoadEnvironment(_level.EnvironmentID);
-
-		_root = new GameObject("root");
-		_root.transform.position = Vector3.zero;
-		_root.transform.rotation = Quaternion.identity;
-
-		// Create blocks.
-
-		_blockCount = 0;
-		for (int y = 0; y < Settings.Height; ++y)
-		{
-			for (int x = 0; x < Settings.Width; ++x)
-			{
-				if (_level.Grid[x, y] != 0 && BlockManager.Get().CreateBlock(_level.Grid[x, y] - 1, x, y))
-				{
-					++_blockCount;
-				}
-			}
-		}
+		LoadEnvironmentAndBlocks(level, false);
 
 		// Create walls.
 
@@ -110,23 +91,65 @@ public class LevelManager : MonoBehaviour
 		_loaded = true;
 	}
 
+	public void LoadEnvironmentAndBlocks(Level level, bool bypassEffects)
+	{
+		if (_level != null)
+		{
+			UnloadLevel();
+		}
+
+		_level = new Level(level);
+		EnvironmentManager.Get().LoadEnvironment(_level.EnvironmentID, bypassEffects);
+
+		_root = new GameObject("root");
+		_root.transform.position = Vector3.zero;
+		_root.transform.rotation = Quaternion.identity;
+
+		// Create blocks.
+
+		_blockCount = 0;
+		for (int y = 0; y < Settings.Height; ++y)
+		{
+			for (int x = 0; x < Settings.Width; ++x)
+			{
+				if (_level.Grid[x, y] != 0 && BlockManager.Get().CreateBlock(_level.Grid[x, y] - 1, x, y))
+				{
+					++_blockCount;
+				}
+			}
+		}
+	}
+
 	public void UnloadLevel()
 	{
 		EnvironmentManager.Get().UnloadEnvironment(_level.EnvironmentID);
 		BlockManager.Get().Clear();
 		UI.SetActive(false);
 
-		while (_walls.transform.childCount > 0)
-			DestroyImmediate(_walls.transform.GetChild(0).gameObject);
-		DestroyImmediate(_walls);
+		if (_walls != null)
+		{
+			while (_walls.transform.childCount > 0)
+				DestroyImmediate(_walls.transform.GetChild(0).gameObject);
+			DestroyImmediate(_walls);
+			_walls = null;
+		}
 
-		while (_balls.transform.childCount > 0)
-			DestroyImmediate(_balls.transform.GetChild(0).gameObject);
-		DestroyImmediate(_balls);
+		if (_balls != null)
+		{
+			while (_balls.transform.childCount > 0)
+				DestroyImmediate(_balls.transform.GetChild(0).gameObject);
+			DestroyImmediate(_balls);
+			_balls = null;
+		}
 
-		DestroyImmediate(_racket);
-		_racket = null;
+		if (_racket != null)
+		{
+			DestroyImmediate(_racket);
+			_racket = null;
+		}
 
+		DestroyImmediate(_root);
+		_root = null;
 		_level = null;
 		_loaded = false;
 	}
@@ -136,8 +159,7 @@ public class LevelManager : MonoBehaviour
 		--_blockCount;
 		if (_blockCount == 0)
 		{
-			// Win!
-			UnloadLevel();
+			Editor.Get().NotifyEndLevel(true);
 		}
 	}
 
@@ -167,8 +189,7 @@ public class LevelManager : MonoBehaviour
 
 			if (_gold / _ballGold == 0)
 			{
-				// Game over.
-				UnloadLevel();
+				Editor.Get().NotifyEndLevel(false);
 				return;
 			}
 

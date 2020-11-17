@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 	public float TranslationSpeed = 1.0f;
 	public float RotationSpeed = 1.0f;
 	public float RotationMax = 20.0f;
+	public float EditModeOffset = -1.0f;
 
 	private Camera _camera;
 
@@ -29,6 +30,11 @@ public class CameraController : MonoBehaviour
 			float x = (target.x / Settings.WorldWidth - 0.5f) * 2.0f;
 			rotation = Quaternion.Euler(0.0f, -x * RotationMax, 0.0f);
 			position = target + rotation * (position-target) + new Vector3(x * Settings.WorldWidth * RotationMax / 300.0f, 0.0f, 0.0f);
+		}
+
+		if (Editor.Get().IsEditing())
+		{
+			position += new Vector3(0.0f, 0.0f, EditModeOffset);
 		}
 
 		transform.position = Vector3.Lerp(transform.position, position, Time.deltaTime * TranslationSpeed);
