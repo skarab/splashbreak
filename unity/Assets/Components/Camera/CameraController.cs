@@ -9,10 +9,29 @@ public class CameraController : MonoBehaviour
 	public float RotationMax = 20.0f;
 	public float EditModeOffset = -1.0f;
 
+	private static CameraController _Instance = null;
+
 	private Camera _camera;
+
+	public static CameraController Get()
+	{
+		return _Instance;
+	}
+
+	public Camera GetCamera()
+	{
+		return _camera;
+	}
+
+	public void SetEditorPosition()
+	{
+		transform.position = ComputeAAPosition() + new Vector3(0.0f, 0.0f, EditModeOffset);
+		transform.rotation = Quaternion.identity;
+	}
 
 	void Awake()
 	{
+		_Instance = this;
 		_camera = GetComponent<Camera>();
 
 		transform.position = ComputeAAPosition();
@@ -32,7 +51,7 @@ public class CameraController : MonoBehaviour
 			position = target + rotation * (position-target) + new Vector3(x * Settings.WorldWidth * RotationMax / 300.0f, 0.0f, 0.0f);
 		}
 
-		if (Editor.Get().IsEditing())
+		if (Editor.IsInstantiated() && Editor.Get().IsEditing())
 		{
 			position += new Vector3(0.0f, 0.0f, EditModeOffset);
 		}

@@ -14,6 +14,7 @@ public class EnvironmentManager : MonoBehaviour
 {
     public Environment[] Environments;
     public float PaniniDistance = 0.259f;
+    public float ChromaticIntensity = 0.344f;
 
     private static EnvironmentManager _Instance = null;
     
@@ -55,6 +56,12 @@ public class EnvironmentManager : MonoBehaviour
                 if (volumes[i].profile.TryGet<PaniniProjection>(out panini))
                 {
                     panini.distance.value = Mathf.Lerp(panini.distance.value, _bypassEffects?0.0f:PaniniDistance, Time.deltaTime * 4.0f);
+                }
+
+                ChromaticAberration chromatic;
+                if (volumes[i].profile.TryGet<ChromaticAberration>(out chromatic))
+                {
+                    chromatic.intensity.value = Mathf.Lerp(chromatic.intensity.value, _bypassEffects ? 0.0f : ChromaticIntensity, Time.deltaTime * 4.0f);
                 }
             }
         }
